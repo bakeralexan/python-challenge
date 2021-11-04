@@ -1,11 +1,12 @@
+#import dependencies and set up data
 import os
 import csv
 csv_path = os.path.join("Resources", "election_data.csv")
 
 with open(csv_path, "r") as csvfile:
     csvreader = csv.reader(csvfile, delimiter=",")
-    csv_header = csvfile.readline()
-
+    csv_header = csvfile.readline() #skip the header so that it does not impact later calculations 
+    # set variables before they are used in the loop and if statements
     unique_list = []
     winner = ""
     candidate_list = []
@@ -19,11 +20,11 @@ with open(csv_path, "r") as csvfile:
         voter_id = row[0]
         county = row[1]
         candidate = row[2]
-        if candidate not in unique_list:
+        if candidate not in unique_list: #creating a list of candidates without having to look manually through the data for them
             unique_list.append(candidate)
 
-        candidate_list.append(candidate)
-
+        candidate_list.append(candidate) #used to calculate total votes cast
+        #if statements to calculate total votes per candidate
         if candidate == "Khan" :
             khan_list.append(candidate)
         elif candidate == "Correy" :
@@ -32,18 +33,18 @@ with open(csv_path, "r") as csvfile:
             Li_list.append(candidate)
         elif candidate == "O'Tooley" :
             OTooley_list.append(candidate)
-    print(f" These are the candidates: {unique_list}")
+    print(f" These are the candidates: {unique_list}") #Displaying the list of candidates
     total_cast = len(candidate_list)
     total_Khan = len(khan_list)
     total_Li = len(Li_list)
     total_Correy = len(Correy_list)
     total_OTooley = len(OTooley_list)
 
-    Khan_percent = "{:.3f}".format((total_Khan/total_cast)*100)
-    Correy_percent = "{:.3f}".format((total_Correy/total_cast)*100)
-    Li_percent = "{:.3f}".format((total_Li/total_cast)*100)
-    OTooley_percent = "{:.3f}".format((total_OTooley/total_cast)*100)
-
+    Khan_percent = "{:.1f}".format((total_Khan/total_cast)*100)
+    Correy_percent = "{:.1f}".format((total_Correy/total_cast)*100)
+    Li_percent = "{:.1f}".format((total_Li/total_cast)*100)
+    OTooley_percent = "{:.1f}".format((total_OTooley/total_cast)*100)
+    #if statements to determine which candidate got the most votes
     if total_Khan > total_Correy and total_Khan > total_Li and total_Khan > total_OTooley:
         winner = "Khan"
     elif total_Correy > total_Khan and total_Correy > total_Li and total_Correy > total_OTooley:
@@ -54,7 +55,7 @@ with open(csv_path, "r") as csvfile:
         winner = "O'Tooley"
 
     print("Election Results")
-    print(f"CSV: {csv_header}")
+    print(f"CSV: {csv_header}") #display column titles from the csv file
     print("----------------------------")
     print(f"Total Votes: {total_cast}")
     print("----------------------------")
